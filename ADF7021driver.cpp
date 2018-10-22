@@ -38,21 +38,23 @@ int verboseLevel = 0; // 0 being quiet, 2 being full verbose
 //-------------------
 //Algorithm
 
-void powerUp(){
-
+void powerUp()
+{
 	gpio_set_value(CE, HIGH);//CE = 1
 	usleep(5000); // 5 mS. 
 	isOn = true;
 	if(verboseLevel > 0){cout <<"on"<< endl;}
 }
 
-void powerDown(){
+void powerDown()
+{
 	cout << "Powering down" << endl;
 	gpio_set_value(CE, LOW);//CE = 0
 	isOn = false;
 	cout << "off"<< endl;
 }
-void Initialize(){
+void Initialize()
+{
 	cout << "Initializing" << endl;
 	//turn on the ADF7021
 	if(!isOn){
@@ -64,7 +66,8 @@ void Initialize(){
 	//activate Rx mode
 }
 
-void regClock(){
+void regClock()
+{
 	gpio_set_value(SCLK, LOW);
 	usleep(T/2); //generate low half of the clk
 	gpio_set_value(SCLK, HIGH); //generate high part of clk
@@ -80,7 +83,8 @@ void clearDB(){
 	//memset(db, 0, sizeof(db));
 }
 
-void readReg(){
+void readReg()
+{
 	if(verboseLevel > 1){cout << "read reg" << endl;}
 	clearDB();
 	gpio_set_value(SLE, HIGH);
@@ -118,42 +122,7 @@ void sendReg()
 	usleep(40000); //40 mS
 	cout << "Send Reg finish" << endl;
 }
-void readSiliconRevision(){
-	cout << "readSiliconRevision" << endl;
-	//make sure everything is on
-	if(!isOn){
-		powerUp();
-	}
-	//set reg value
-	clearDB();
-	db[8] = 1;
-	db[7] = 1;
-	db[6] = 1;
-	db[5] = 1;
-	db[4] = 1;
-	db[3] = 0;
-	db[2] = 1;
-	db[1] = 1;
-	db[0] = 1;
-	//ask for Revision code
-	gpio_set_value(SLE, LOW);//SLE = 0;
-	for(i = 8; i>=0; i--){
-		gpio_set_value_2(SDATA, db[i]);
-		regClock();
-	}
-	usleep(40000); //40 mS
-	//read the Revision code
-	readReg();
-	
-	//calculate the value
-	revisionCode = 				8*db[4]+	4*db[3]+	2*db[2]+	db[1]		;
-	productCode = 	(100*(		8*db[16]+	4*db[15]+	2*db[14]+	db[13])) 	+
-					(10*(		8*db[12]+	4*db[11]+	2*db[10]+	db[9])) 	+
-					(1*	(		8*db[8]+	4*db[7]+	2*db[6]+	db[5]))		;
-	//show the user the value
-	cout <<"Revision code: "<< std::hex << "0x" << revisionCode << "     " << std::dec << revisionCode << endl;
-	cout <<"Product code : "<< std::hex << "0x" << productCode  << "   " << std::dec << productCode << endl;
-}
+
 void setReg(unsigned long word)
 {
 	if(verboseLevel > 0) {cout << "Set Reg" << endl;}
@@ -332,8 +301,14 @@ void testToneOnly()
 
 void enableSPI()
 {
-	setReg(0xE000F);
+	setReg(0x000E000F);
 	cout << "set spi";
+}
+
+void enableUART()
+{
+	setReg(0x0000000F);
+	if(verboseLevel > 0){cout <<"UART Enabled"<<endl;}
 }
 
 void ardOn()
@@ -350,18 +325,6 @@ void ardOff()
 }
 
 int main(int argc, char *argv[]){
-	cout << "Main" << endl;
-	if (verboseLevel > 1)
-	{
-		cout << "There are " << argc << " arguments:\n";
-
-   		i = 0;
-   		while(i<argc)
-   		{
-   			cout << argv[i] << endl;
-   			i++;
-   		}
-	}
 	if(argc>1)
 	{
 		for(i = 1; i < argc; i++)
@@ -369,7 +332,6 @@ int main(int argc, char *argv[]){
 			if(strcmp(argv[i], "-on") == 0)
 			{
 				gpio_init();
-				powerUp();
 			}
 			if(strcmp(argv[i], "-off") == 0)
 			{
@@ -410,75 +372,21 @@ int main(int argc, char *argv[]){
 			{
 				ardOff();
 			}
+			if(strcmp(argv[i], "-cw3") == 0)
+			{
+				callSign(); space();
+				callSign(); space();
+				callSign(); space();
+			}
+			if(strcmp(argv[i], "-uart") == 0)
+			{
+				enableUART();
+			}
+			if(strcmp(argv[i], "-spi") == 0)
+			{
+				enableSPI();
+			}
 		}
 	}
-	//pin direction and initial GPIO level
-/*	//CE
-	system("config-pin p9.15 gpio_pd");
-	system("config-pin p9.15 out");
-	system("config-pin -q p9.15");
-	//SLE
-	system("config-pin p8.09 gpio_pd");
-	system("config-pin p8.09 out");
-	system("config-pin -q p8.09");
-	//SDATA
-	system("config-pin p8.12 gpio_pd");
-	system("config-pin p8.12 out");
-	system("config-pin -q p8.12");
-	//SREAD
-	system("config-pin p8.07 gpio_pd");
-	system("config-pin p8.07 in");
-	system("config-pin -q p8.07");
-	//SCLK
-	system("config-pin p8.10 gpio_pd");
-	system("config-pin p8.10 out");
-	system("config-pin -q p8.10");
-*/
-/* commented out as I want to test part by part
-	gpio_export(CE);
-	gpio_export(SLE);
-	gpio_export(SDATA);
-	gpio_export(SREAD);
-	gpio_export(SCLK);
-	//gpio_export(MUXOUT);
-	
-	gpio_set_dir(CE, OUTPUT_PIN);
-	gpio_set_dir(SLE, OUTPUT_PIN); 
-	gpio_set_dir(SDATA, OUTPUT_PIN);   // The LED is an output
-	gpio_set_dir(SCLK, OUTPUT_PIN);   // The LED is an output
-	gpio_set_dir(SREAD, INPUT_PIN);   // The LED is an output
-*/	//gpio_set_dir(MUXOUT, INPUT_PIN);
-	//or
-	gpio_init();
-
-	//do something
-	tx_mode();
-
-//hope this works
-/*setReg(0x80293814);
-usleep(2000000);
-*/	//hold for testing
-	readSiliconRevision();
-	readSiliconRevisionV2();
-	testToneOnly();
-	//varify channel is on
-	usleep(3000000);
-	//try call sign
-	space(); 	callSign(); 	space();	callSign();	space(); callSign();
-	//power down
-	powerDown();
-	//unexport pins
-	gpio_unexport(CE);     // unexport the LED
-	gpio_unexport(SDATA);
-	gpio_unexport(SREAD);
-	gpio_unexport(SLE);
-	gpio_unexport(SCLK);
-	//gpio_unexport(MUXOUT);
-	//or
-	//gpio_release();
-
-	cout << "All done" << endl;
-	
-	//return
 	return 0;
 }
