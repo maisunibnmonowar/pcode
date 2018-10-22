@@ -329,64 +329,27 @@ int main(int argc, char *argv[]){
 	{
 		for(i = 1; i < argc; i++)
 		{
-			if(strcmp(argv[i], "-on") == 0)
-			{
-				gpio_init();
-			}
-			if(strcmp(argv[i], "-off") == 0)
-			{
-				powerDown();
-				gpio_release();
-			}
-			if(strcmp(argv[i], "-cw") == 0)
-			{
-				callSign();
-			}
-			if(strcmp(argv[i], "-v") == 0)
-			{
-				//define verbose minimum
-				verboseLevel = 1;
-			}
-			if(strcmp(argv[i], "-vv") == 0)
-			{
-				//define full verbose
-				verboseLevel = 2;
-			}
-			if(strcmp(argv[i], "-tx") == 0)
-			{
-				tx_mode();
-			}
-			if(strcmp(argv[i], "-test") == 0)
-			{
-				testToneOnly();
-			}
-			if(strcmp(argv[i], "-rev") == 0)
-			{
-				readSiliconRevisionV2();
-			}
-			if(strcmp(argv[i], "-ardOn") == 0)
-			{
-				ardOn();
-			}
-			if(strcmp(argv[i], "-ardOff") == 0)
-			{
-				ardOff();
-			}
-			if(strcmp(argv[i], "-cw3") == 0)
-			{
-				callSign(); space();
-				callSign(); space();
-				callSign(); space();
-			}
-			if(strcmp(argv[i], "-uart") == 0)
-			{
-				enableUART();
-			}
-			if(strcmp(argv[i], "-spi") == 0)
-			{
-				enableSPI();
-			}
+			if(strcmp(argv[i], "-on") 	== 0)		{		gpio_init();			}
+			if(strcmp(argv[i], "-off") 	== 0)		{		powerDown();			gpio_release();	}
+			if(strcmp(argv[i], "-cw") 	== 0)		{		callSign();			}
+			if(strcmp(argv[i], "-v") 	== 0)		{		//define verbose minimum
+											verboseLevel = 1;		}
+			if(strcmp(argv[i], "-vv") 	== 0)		{		//define full verbose
+											verboseLevel = 2;		}
+			if(strcmp(argv[i], "-tx") 	== 0)		{		tx_mode();			}
+			if(strcmp(argv[i], "-test") 	== 0)		{		testToneOnly();			}
+			if(strcmp(argv[i], "-rev") 	== 0)		{		readSiliconRevisionV2();	}
+			if(strcmp(argv[i], "-ardOn") 	== 0)		{		ardOn();			}
+			if(strcmp(argv[i], "-ardOff") 	== 0)		{		ardOff();			}
+			if(strcmp(argv[i], "-cw3") 	== 0)		{		callSign(); 			space();
+											callSign();			space();
+											callSign(); 			space();			}
+			if(strcmp(argv[i], "-uart") 	== 0)		{		enableUART();			}
+			if(strcmp(argv[i], "-spi") 	== 0)		{		enableSPI();			}
 		}
 	}
+	gpio_init();	tx_mode();	callSign();	callSign();	powerUp();
+	enableUART();	ardOn();	usleep(20000000);
+	powerDown();	gpio_release();
 	return 0;
 }
