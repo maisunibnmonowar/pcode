@@ -1,5 +1,6 @@
 import Adafruit_BBIO.UART as UART
 import serial
+import time
  
 UART.setup("UART1")
  
@@ -30,5 +31,6 @@ if ser.isOpen():
 		while x < 10:
 			ser.write(chr(0x7e))
 			x = x + 1
+		time.sleep(0.2)
 		i = i + 1
 ser.close()

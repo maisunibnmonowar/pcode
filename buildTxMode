@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Building the ADFtxMode"
+
+g++ -O2 -Wall ADFtxMode.cpp SimpleGPIO.cpp -o ADFtxMode

@@ -348,7 +348,6 @@ int main(int argc, char *argv[]){
 			if(strcmp(argv[i], "-spi") 	== 0)		{		enableSPI();			}
 		}
 	}
-	gpio_init();	tx_mode();	callSign();	callSign();
-	powerUp();
+	tx_mode();
 	return 0;
 }
