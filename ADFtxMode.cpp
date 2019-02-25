@@ -169,7 +169,7 @@ void setReg2()
 void setReg3()
 {
 	if(verboseLevel > 0) {cout << "Set reg 3" << endl;}
-	setReg(0x2b120123);
+	setReg(0x2b104123);
 	usleep(5000); //5 mS
 	if(verboseLevel > 0) {cout << "Set Reg 3 finish" << endl;}
 }
@@ -348,7 +348,7 @@ int main(int argc, char *argv[]){
 			if(strcmp(argv[i], "-spi") 	== 0)		{		enableSPI();			}
 		}
 	}
-	//gpio_init();	tx_mode();	callSign();	callSign();
-	powerDown();	gpio_release();
+	tx_mode();
+	//powerDown();	gpio_release();
 	return 0;
 }

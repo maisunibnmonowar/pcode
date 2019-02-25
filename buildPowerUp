@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Building the ADFpowerUp"
+
+g++ -O2 -Wall ADFpowerUp.cpp SimpleGPIO.cpp -o ADFpowerUp

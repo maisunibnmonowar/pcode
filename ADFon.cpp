@@ -148,28 +148,28 @@ void setReg(unsigned long word)
 void setReg0()
 {
 	if(verboseLevel > 0) {cout << "Set reg 0" << endl;}
-	setReg(0x9160D870);
+	setReg(0x116396e0);
 	usleep(500); //500 uS
 	if(verboseLevel > 0) {cout << "Set Reg 0 finish" << endl;}
 }
 void setReg1()
 {
 	if(verboseLevel > 0) {cout << "Set reg 1" << endl;}
-	setReg(0x575011);
+	setReg(0x479011);
 	usleep(5000); //5 mS
 	if(verboseLevel > 0) {cout << "Set Reg 1 finish" << endl;}
 }
 void setReg2()
 {
 	if(verboseLevel > 0) {cout << "Set reg 2" << endl;}
-	setReg(0x71F082);
+	setReg(0xffef4c2);
 	usleep(1000000); //1 S
 	if(verboseLevel > 0) {cout << "Set Reg 2 finish" << endl;}
 }
 void setReg3()
 {
 	if(verboseLevel > 0) {cout << "Set reg 3" << endl;}
-	setReg(0x2B160123);
+	setReg(0x2b120123);
 	usleep(5000); //5 mS
 	if(verboseLevel > 0) {cout << "Set Reg 3 finish" << endl;}
 }
