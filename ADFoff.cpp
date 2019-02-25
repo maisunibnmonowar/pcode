@@ -349,6 +349,6 @@ int main(int argc, char *argv[]){
 		}
 	}
 	//gpio_init();	tx_mode();	callSign();	callSign();
-	//powerDown();	gpio_release();
+	powerDown();	gpio_release();
 	return 0;
 }

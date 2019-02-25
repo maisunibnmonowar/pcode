@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Building the ADFcw"
+
+g++ -O2 -Wall ADFcw.cpp SimpleGPIO.cpp -o ADFcw

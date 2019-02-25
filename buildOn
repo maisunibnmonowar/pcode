@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Building the ADFon"
+
+g++ -O2 -Wall ADFon.cpp SimpleGPIO.cpp -o ADFon

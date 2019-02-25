@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Building the ADFoff"
+
+g++ -O2 -Wall ADFoff.cpp SimpleGPIO.cpp -o ADFoff
