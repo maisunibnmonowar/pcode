@@ -10,3 +10,9 @@ test2.exe
 buildTest2.cmd
 test2.exe.stackdump
 ADF7021driver
+ADFtxMode
+ADFon
+ADFoff
+ADFcw
+ADFpowerUp
+ADFpowerDown
